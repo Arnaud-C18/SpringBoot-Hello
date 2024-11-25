@@ -1,5 +1,7 @@
 package fr.diginamic.hello.entites;
 
+import java.util.Objects;
+
 public class Ville {
 
     String nom;
@@ -44,5 +46,17 @@ public class Ville {
      */
     public void setNbHabitants(int nbHabitants) {
         this.nbHabitants = nbHabitants;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Ville ville = (Ville) o;
+        return Objects.equals(nom, ville.nom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(nom);
     }
 }
