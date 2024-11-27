@@ -1,27 +1,35 @@
 package fr.diginamic.hello.entites;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.util.Objects;
 
+@Entity
+@Table(name = "ville")
 public class Ville {
 
     private static Long compteurId = 1L;
-    @Min(1)
-    Long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotNull
     @Size(min = 2, max = 50)
-    String nom;
-    @Min(1)
-    Integer nbHabitants;
+    private String nom;
 
-    public Ville(String nom, Integer nbHabitants) {
-        this.id = compteurId++;
-        this.nom = nom;
-        this.nbHabitants = nbHabitants;
-    }
+    @Min(1)
+    private Integer nbHabitants;
+
+    @ManyToOne
+    @JoinColumn(name = "departement_code")
+    @JsonBackReference
+    private Departement departement;
+
+    public Ville() {}
 
     /**
      * Getter
@@ -75,6 +83,24 @@ public class Ville {
      */
     public void setNbHabitants(Integer nbHabitants) {
         this.nbHabitants = nbHabitants;
+    }
+
+    /**
+     * Getter
+     *
+     * @return departement
+     */
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    /**
+     * Setter
+     *
+     * @param departement
+     */
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
     }
 
     /**
