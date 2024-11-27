@@ -8,16 +8,16 @@ import java.util.Objects;
 
 public class Ville {
 
-    private static int compteurId = 0;
+    private static Long compteurId = 1L;
     @Min(1)
-    int id;
+    Long id;
     @NotNull
     @Size(min = 2, max = 50)
     String nom;
     @Min(1)
-    int nbHabitants;
+    Integer nbHabitants;
 
-    public Ville(String nom, int nbHabitants) {
+    public Ville(String nom, Integer nbHabitants) {
         this.id = compteurId++;
         this.nom = nom;
         this.nbHabitants = nbHabitants;
@@ -28,7 +28,7 @@ public class Ville {
      *
      * @return id
      */
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -37,7 +37,7 @@ public class Ville {
      *
      * @param id
      */
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -64,7 +64,7 @@ public class Ville {
      *
      * @return nbHabitants
      */
-    public int getNbHabitants() {
+    public Integer getNbHabitants() {
         return nbHabitants;
     }
 
@@ -73,7 +73,7 @@ public class Ville {
      *
      * @param nbHabitants
      */
-    public void setNbHabitants(int nbHabitants) {
+    public void setNbHabitants(Integer nbHabitants) {
         this.nbHabitants = nbHabitants;
     }
 
@@ -90,7 +90,7 @@ public class Ville {
     }
 
     /**
-     * @return int
+     * @return Long
      */
     @Override
     public int hashCode() {
