@@ -2,41 +2,56 @@ package fr.diginamic.hello.entites;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
 @Table(name = "ville")
 public class Ville {
 
-    private static Long compteurId = 1L;
+    @Column(name = "ID_REGION")
+    private String idRegion;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @NotNull
-    @Size(min = 2, max = 50)
+    @Column(name = "NAME", length = 50)
     private String nom;
 
-    @Min(1)
-    private Integer nbHabitants;
-
     @ManyToOne
-    @JoinColumn(name = "departement_code")
+    @JoinColumn(name = "DEPARTMENT_ID")
     @JsonBackReference
     private Departement departement;
+
+    @Column(name = "NB_INHABITANTS")
+    private Integer nbHabitants;
+
 
     public Ville() {}
 
     /**
      * Getter
      *
+     * @return idRegion
+     */
+    public String getIdRegion() {
+        return idRegion;
+    }
+
+    /**
+     * Setter
+     *
+     * @param idRegion
+     */
+    public void setIdRegion(String idRegion) {
+        this.idRegion = idRegion;
+    }
+
+    /**
+     * Getter
+     *
      * @return id
      */
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -45,7 +60,7 @@ public class Ville {
      *
      * @param id
      */
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -116,7 +131,7 @@ public class Ville {
     }
 
     /**
-     * @return Long
+     * @return Integer
      */
     @Override
     public int hashCode() {

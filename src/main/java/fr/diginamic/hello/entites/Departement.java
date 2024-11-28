@@ -2,7 +2,6 @@ package fr.diginamic.hello.entites;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -10,9 +9,12 @@ import java.util.List;
 public class Departement {
 
     @Id
-    private Integer code;
+    private int id;
 
-    @Size(min = 2, max = 50)
+    @Column(name = "CODE")
+    private String code;
+
+    @Column(name = "NAME", length = 50)
     private String nom;
 
     @OneToMany(mappedBy = "departement", cascade = CascadeType.ALL)
@@ -24,9 +26,27 @@ public class Departement {
     /**
      * Getter
      *
+     * @return id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Setter
+     *
+     * @param id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Getter
+     *
      * @return code
      */
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
@@ -35,7 +55,7 @@ public class Departement {
      *
      * @param code
      */
-    public void setCode(Integer code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
