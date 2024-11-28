@@ -1,6 +1,7 @@
 package fr.diginamic.hello.repository;
 
 import fr.diginamic.hello.entites.Ville;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -10,6 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface VilleRepository extends CrudRepository<Ville, Integer>, PagingAndSortingRepository<Ville, Integer> {
+
+    Page<Ville> findAll(Pageable pageable);
+
     Optional<Ville> findById(Integer id);
 
     Ville findByNom(String nom);
