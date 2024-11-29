@@ -9,7 +9,7 @@ import java.util.List;
 public class Departement {
 
     @Id
-    private int id;
+    private Integer id;
 
     @Column(name = "CODE")
     private String code;
@@ -28,7 +28,7 @@ public class Departement {
      *
      * @return id
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -37,7 +37,7 @@ public class Departement {
      *
      * @param id
      */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

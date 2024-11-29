@@ -2,10 +2,10 @@ package fr.diginamic.hello.services;
 
 import java.util.List;
 import fr.diginamic.hello.entites.Departement;
-import fr.diginamic.hello.entites.Ville;
-import jakarta.persistence.EntityManager;
+import fr.diginamic.hello.repository.DepartementRepository;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,64 +14,46 @@ import org.springframework.transaction.annotation.Transactional;
 public class DepartementService {
 
     @PersistenceContext
-    private EntityManager em;
+    private DepartementRepository departementRepository;
 
-    public List<Departement> extraireDepartements() {
-        TypedQuery<Departement> query = em.createQuery("SELECT d FROM Departement d", Departement.class);
-        return query.getResultList();
+    public List<Departement> extraireDepartements(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return departementRepository.findAll(pageable).getContent();
     }
 
-    public Departement extraireDepartementParCode(int id) {
-        return em.find(Departement.class, id);
+    public Departement extraireDepartementParCode(Integer id) {
+        return departementRepository.findById(id).get();
     }
 
     public Departement extraireDepartementParNom(String nom) {
-        return em.createQuery("SELECT d FROM Departement d WHERE d.nom = :nom", Departement.class)
-                .setParameter("nom", nom)
-                .getSingleResult();
+        return departementRepository.findByNom(nom);
     }
 
-    public List<Ville> nPlusGrandeVilles(int code, int n) {
-        return em.createQuery("SELECT v FROM Ville v WHERE v.departement.code = :code ORDER BY v.nbHabitants DESC", Ville.class)
-                .setParameter("code", code)
-                .setMaxResults(n)
-                .getResultList();
-
-    }
-
-    public List<Ville> villesPopEntreMinEtMax(int code, Long min, Long max) {
-        return em.createQuery("SELECT v FROM Ville v WHERE v.departement.code = :code AND v.nbHabitants >= :min AND v.nbHabitants <= :max", Ville.class)
-                .setParameter("code", code)
-                .setParameter("min", min)
-                .setParameter("max", max)
-                .getResultList();
+    public Integer extraireNbHabitants(int departementId) {
+        return departementRepository.getPopulationTotale(departementId);
     }
 
     @Transactional
-    public List<Departement> insererDepartement(Departement nouvelleDepartement) {
-        em.persist(nouvelleDepartement);
-        return extraireDepartements();
+    public Departement insererDepartement(Departement nouvelleDepartement) {
+        return departementRepository.save(nouvelleDepartement);
     }
 
     @Transactional
-    public List<Departement> modifierDepartement(int code, Departement departementModifiee) {
-        Departement departement = extraireDepartementParCode(code);
-        if (departement == null) {
-            return null;
-        } else {
-            departement.setNom(departementModifiee.getNom());
-            return extraireDepartements();
-        }
-    }
-
-    @Transactional
-    public List<Departement> supprimerDepartement(int id) {
+    public Departement modifierDepartement(Integer id, Departement departementModifiee) {
         Departement departement = extraireDepartementParCode(id);
         if (departement == null) {
             return null;
         } else {
-            em.remove(departement);
-            return extraireDepartements();
+            departementModifiee.setId(id);
+            return insererDepartement(departementModifiee);
+        }
+    }
+
+    @Transactional
+    public void supprimerDepartement(int id) {
+        Departement departement = extraireDepartementParCode(id);
+        if (departement != null) {
+            departementRepository.delete(departement);
         }
     }
 }

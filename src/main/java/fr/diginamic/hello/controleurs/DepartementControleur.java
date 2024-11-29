@@ -1,7 +1,6 @@
 package fr.diginamic.hello.controleurs;
 
 import java.util.List;
-import fr.diginamic.hello.entites.Ville;
 import fr.diginamic.hello.entites.Departement;
 import fr.diginamic.hello.services.DepartementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,8 @@ public class DepartementControleur {
     private DepartementService departementService;
 
     @GetMapping
-    public List<Departement> readDepartements() {
-        return departementService.extraireDepartements();
+    public List<Departement> readDepartements(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return departementService.extraireDepartements(page, size);
     }
 
     @GetMapping("/code/{code}")
@@ -26,16 +25,6 @@ public class DepartementControleur {
     @GetMapping("/nom/{nom}")
     public Departement readDepartementNom(@PathVariable String nom) {
         return departementService.extraireDepartementParNom(nom);
-    }
-
-    @GetMapping("/code/{code}/VillesPlusPeuple")
-    public List<Ville> readNVillesPlusPeuple(@PathVariable Integer code, @RequestParam Integer n) {
-        return departementService.nPlusGrandeVilles(code, n);
-    }
-
-    @GetMapping("/code/{code}/VillesPopEntreMinEtMax")
-    public List<Ville> readVillesPopEtreMinEtMax(@PathVariable Integer code, @RequestParam Long min, @RequestParam Long max) {
-        return departementService.villesPopEntreMinEtMax(code, min, max);
     }
 
     @PostMapping
