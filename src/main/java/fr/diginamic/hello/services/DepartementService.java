@@ -3,7 +3,7 @@ package fr.diginamic.hello.services;
 import java.util.List;
 import fr.diginamic.hello.entites.Departement;
 import fr.diginamic.hello.repository.DepartementRepository;
-import jakarta.persistence.PersistenceContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,25 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class DepartementService {
 
-    @PersistenceContext
+    @Autowired
     private DepartementRepository departementRepository;
-
-    public List<Departement> extraireDepartements(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return departementRepository.findAll(pageable).getContent();
-    }
-
-    public Departement extraireDepartementParCode(Integer id) {
-        return departementRepository.findById(id).get();
-    }
-
-    public Departement extraireDepartementParNom(String nom) {
-        return departementRepository.findByNom(nom);
-    }
-
-    public Integer extraireNbHabitants(int departementId) {
-        return departementRepository.getPopulationTotale(departementId);
-    }
 
     @Transactional
     public Departement insererDepartement(Departement nouvelleDepartement) {
@@ -55,5 +38,22 @@ public class DepartementService {
         if (departement != null) {
             departementRepository.delete(departement);
         }
+    }
+
+    public List<Departement> extraireDepartements(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return departementRepository.findAll(pageable).getContent();
+    }
+
+    public Departement extraireDepartementParCode(Integer id) {
+        return departementRepository.findById(id).get();
+    }
+
+    public Departement extraireDepartementParNom(String nom) {
+        return departementRepository.findByNom(nom);
+    }
+
+    public Integer extraireNbHabitants(int departementId) {
+        return departementRepository.getPopulationTotale(departementId);
     }
 }

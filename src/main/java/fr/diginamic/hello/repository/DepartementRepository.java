@@ -4,6 +4,7 @@ import fr.diginamic.hello.entites.Departement;
 import fr.diginamic.hello.entites.Ville;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -17,6 +18,7 @@ public interface DepartementRepository extends CrudRepository<Departement, Integ
 
     Departement findByNom(String nom);
 
+    @Query("SELECT SUM(v.nbHabitants) FROM Ville v WHERE v.departement.id = :departementId")
     Integer getPopulationTotale(Integer departementId);
 
 }

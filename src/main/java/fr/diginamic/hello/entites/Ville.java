@@ -2,6 +2,10 @@ package fr.diginamic.hello.entites;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 import java.util.Objects;
 
 @Entity
@@ -12,9 +16,12 @@ public class Ville {
     private String idRegion;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "NAME", length = 50)
+    @NotEmpty(message = "Le nom de la ville est obligatoire")
+    @Size(min = 2, message = "Le nom de la ville doit comporter au moins 2 lettres")
     private String nom;
 
     @ManyToOne
@@ -23,6 +30,7 @@ public class Ville {
     private Departement departement;
 
     @Column(name = "NB_INHABITANTS")
+    @Min(value = 10, message = "La ville doit avoir au moins 10 habitants")
     private Integer nbHabitants;
 
 

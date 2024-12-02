@@ -1,5 +1,6 @@
 package fr.diginamic.hello.repository;
 
+import fr.diginamic.hello.entites.Departement;
 import fr.diginamic.hello.entites.Ville;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,8 @@ public interface VilleRepository extends CrudRepository<Ville, Integer>, PagingA
     Optional<Ville> findById(Integer id);
 
     Ville findByNom(String nom);
+
+    Ville findByDepartementAndNom(Departement departement, String nom);
 
     List<Ville> findByNomStartingWith(String chaine);
 

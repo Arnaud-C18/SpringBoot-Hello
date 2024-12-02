@@ -1,4 +1,4 @@
-package fr.diginamic.hello.Dto;
+package fr.diginamic.hello.dto;
 
 import fr.diginamic.hello.entites.Departement;
 import fr.diginamic.hello.services.DepartementService;

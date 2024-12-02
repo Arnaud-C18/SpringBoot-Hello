@@ -1,10 +1,21 @@
-package fr.diginamic.hello.Dto;
+package fr.diginamic.hello.dto;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public class VilleDto {
 
     private Integer code;
+
+    @Min(value = 10, message = "La ville doit avoir au moins 10 habitants")
     private Integer nbHabitants;
+
+    @Size(min = 2, max = 2, message = "Le code département doit comporter exactement 2 caractères")
     private Integer codeDepartement;
+
+    @NotEmpty(message = "Le nom de la ville est obligatoire")
+    @Size(min = 2, message = "Le nom de la ville doit comporter au moins 2 lettres")
     private String nom;
 
     /**
