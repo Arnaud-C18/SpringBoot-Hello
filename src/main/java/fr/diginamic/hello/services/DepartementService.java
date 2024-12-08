@@ -1,13 +1,20 @@
 package fr.diginamic.hello.services;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
+
+import fr.diginamic.hello.dto.DepartementMapper;
 import fr.diginamic.hello.entites.Departement;
+import fr.diginamic.hello.entites.Ville;
+import fr.diginamic.hello.exception.CustomException;
 import fr.diginamic.hello.repository.DepartementRepository;
+import fr.diginamic.hello.repository.VilleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Document;
 
 /**
  * Service pour la gestion des départements.
@@ -17,6 +24,7 @@ public class DepartementService {
 
     @Autowired
     private DepartementRepository departementRepository;
+    private VilleRepository villeRepository;
 
     /**
      * Ajoute un nouveau département dans la base de données.

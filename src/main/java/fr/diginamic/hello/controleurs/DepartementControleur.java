@@ -2,8 +2,12 @@ package fr.diginamic.hello.controleurs;
 
 import java.util.List;
 import fr.diginamic.hello.entites.Departement;
+import fr.diginamic.hello.entites.Ville;
+import fr.diginamic.hello.exception.CustomException;
 import fr.diginamic.hello.services.DepartementService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.Parameter;

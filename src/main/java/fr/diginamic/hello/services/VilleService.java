@@ -1,12 +1,17 @@
 package fr.diginamic.hello.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import fr.diginamic.hello.exception.CustomException;
 import fr.diginamic.hello.repository.VilleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import fr.diginamic.hello.entites.Ville;
 import org.springframework.transaction.annotation.Transactional;
@@ -206,5 +211,34 @@ public class VilleService {
         } else {
             return villes;
         }
+    }
+
+    /**
+     * Exporte les villes ayant une population supérieure à un seuil donné au format CSV.
+     *
+     * @param nbHabitantsMin Le seuil minimum de population.
+     * @return Un ResponseEntity contenant le fichier CSV.
+     * @throws CustomException Si aucune ville ne correspond aux critères.
+     */
+    public ResponseEntity<ByteArrayResource> exporterVillesCSV(int nbHabitantsMin) throws CustomException {
+        List<Ville> villes = extraireVilleNbHabitantsMin(nbHabitantsMin);
+
+        String header = "Nom de la ville,Nombre d'habitants,Code département,Nom du département\n";
+        String body = villes.stream()
+                .map(ville -> String.format("%s,%d,%s,%s",
+                        ville.getNom(),
+                        ville.getNbHabitants(),
+                        ville.getDepartement().getCode(),
+                        ville.getDepartement().getNom()))
+                .collect(Collectors.joining("\n"));
+
+        String csvContent = header + body;
+
+        ByteArrayResource resource = new ByteArrayResource(csvContent.getBytes());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=villes.csv")
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(resource);
     }
 }
